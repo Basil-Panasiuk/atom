@@ -43,7 +43,7 @@ const isAvailable = computed(() => {
 })
 
 const isSelected = computed(() => {
-  return props.video.id === mediaStore.selectedVideo.id
+  return props.video.id === mediaStore.selectedVideo?.id
 })
 </script>
 <style lang="scss"></style>

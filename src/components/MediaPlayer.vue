@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="mediaStore.selectedVideo">
     <YouTube :src="mediaStore.selectedVideo.video_url" @state-change="handleVideoState" />
   </div>
 </template>
@@ -23,7 +23,7 @@ const notify = () => {
 }
 
 const handleVideoState = (e) => {
-  if (mediaStore.videos[mediaStore.lastAvailable].id !== mediaStore.selectedVideo.id) {
+  if (mediaStore.videos[mediaStore.lastAvailable].id !== mediaStore.selectedVideo?.id) {
     return
   }
   const playerState = e.data
@@ -35,7 +35,7 @@ const handleVideoState = (e) => {
 }
 
 watch(time, (value) => {
-  if (value >= mediaStore.selectedVideo.video_time) {
+  if (value >= mediaStore?.selectedVideo?.video_time) {
     notify()
     mediaStore.setNextMediaAvailable()
     reset()
