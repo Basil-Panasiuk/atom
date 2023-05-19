@@ -1,7 +1,6 @@
 <template>
   <div>
     <YouTube :src="mediaStore.selectedVideo.video_url" @state-change="handleVideoState" />
-    <h1>{{ time }} - seconds</h1>
   </div>
 </template>
 
@@ -10,11 +9,18 @@ import YouTube from 'vue3-youtube'
 import { useMediaStore } from '@/stores/media'
 import { watch } from 'vue'
 import { useStopWatch } from '@/composables/stopWatch'
-import { useNotification } from '@kyvg/vue3-notification'
-
+import { ElNotification } from 'element-plus'
 const mediaStore = useMediaStore()
-const { notify } = useNotification()
 const { time, start, stop, reset } = useStopWatch()
+
+const notify = () => {
+  ElNotification({
+    title: 'Great!',
+    message: 'Nex video is available',
+    type: 'success',
+    duration: 3000
+  })
+}
 
 const handleVideoState = (e) => {
   if (mediaStore.videos[mediaStore.lastAvailable].id !== mediaStore.selectedVideo.id) {
@@ -30,10 +36,7 @@ const handleVideoState = (e) => {
 
 watch(time, (value) => {
   if (value >= mediaStore.selectedVideo.video_time) {
-    notify({
-      title: 'Nex video is available',
-      type: 'warn'
-    })
+    notify()
     mediaStore.setNextMediaAvailable()
     reset()
   }

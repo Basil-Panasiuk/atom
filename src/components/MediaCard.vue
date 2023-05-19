@@ -1,14 +1,22 @@
 <template>
   <div
-    class="rounded-lg p-2 w-96"
+    class="rounded-lg p-2 w-96 flex items-center"
     :class="{
-      'bg-amber-600 cursor-pointer': isAvailable,
-      'bg-zinc-600 cursor-default': !isAvailable,
+      'bg-orange-500 cursor-pointer': isAvailable,
+      'bg-zinc-400 cursor-default': !isAvailable,
       'border-black border-2': isSelected
     }"
     @click="onMediaClick"
   >
-    <h5 class="mb-2 text-xl font-medium text-neutral-800 dark:text-neutral-50">
+    <div class="flex items-center mr-4">
+      <span class="mr-1">{{ index + 1 }}</span>
+      <el-icon v-if="isSelected"><VideoPause /></el-icon>
+      <el-icon v-else-if="isAvailable"><VideoPlay /></el-icon>
+      <el-icon v-else><Lock /></el-icon>
+    </div>
+    <h5
+      class="mb-2 text-xl font-medium text-neutral-800 dark:text-neutral-50 whitespace-nowrap text-ellipsis overflow-hidden"
+    >
       {{ props.video.title }}
     </h5>
   </div>
@@ -20,6 +28,7 @@ import { useMediaStore } from '@/stores/media'
 
 const props = defineProps<{
   video: Video
+  index: number
 }>()
 
 const mediaStore = useMediaStore()
